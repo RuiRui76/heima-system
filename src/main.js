@@ -1,3 +1,6 @@
+/**
+ * 项目启动入口
+ */
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -9,10 +12,10 @@ import ElementUI from 'element-ui'
 // 加载 element 组件库样式
 import 'element-ui/lib/theme-chalk/index.css'
 
-Vue.config.productionTip = false
-
 // 全局注册 element 组件库
 Vue.use(ElementUI)
+
+Vue.config.productionTip = false
 
 new Vue({
   router,

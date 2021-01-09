@@ -1,5 +1,32 @@
 <template>
-  <div class="login-container">登录界面</div>
+  <div class="login-container">
+  <div class="login-form-wrap">
+    <div class="login-head">
+      <div class="logo"></div>
+    </div>
+  <el-form class="login-form" ref="form" :model="user">
+  <el-form-item>
+    <el-input
+     v-model="user.mobile"
+     placeholder= "请输入手机号"></el-input>
+  </el-form-item>
+  <el-form-item>
+    <el-input
+     v-model="user.code"
+     placeholder= "请输入验证码"></el-input>
+  </el-form-item>
+  <el-form-item>
+    <el-checkbox v-model="checked">我已阅读并同意<a href="javascript:;">用户协议和隐私条</a></el-checkbox>
+  </el-form-item>
+  <el-form-item>
+    <el-button
+    class="login-btn"
+    type="primary"
+    @click="onSubmit">登录</el-button>
+  </el-form-item>
+</el-form>
+  </div>
+</div>
 </template>
 
 <script>
@@ -8,13 +35,56 @@ export default {
   components: {},
   props: {},
   data () {
-    return {}
+    return {
+      user: {
+        mobile: '',
+        code: ''
+      },
+      checked: false
+    }
   },
   computed: {},
   watch: {},
-  created: {},
-  mounted: {},
-  methods: {}
+  created () {},
+  mounted () {},
+  methods: {
+    onSubmit () {
+      console.log('submit!')
+    }
+  }
 }
 </script>
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.login-container{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('./login_bg.jpg') no-repeat;
+  background-size: cover;
+  .login-form-wrap{
+    background-color: #fff;
+    padding: 30px 50px 10px;
+    min-width: 300px;
+  }
+  .login-head{
+    display:flex;
+    justify-content: center;
+    .logo{
+      width: 200px;
+      height: 57px;
+      background: url('./logo_index.png') no-repeat;
+      background-size: contain;
+    }
+  }
+  .login-form{
+    .login-btn{
+      width: 100%;
+    }
+  }
+}
+</style>
