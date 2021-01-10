@@ -22,7 +22,8 @@
     <el-button
     class="login-btn"
     type="primary"
-    @click="onSubmit">登录</el-button>
+    :loading="loginLoading"
+    @click="onLogin">登录</el-button>
   </el-form-item>
 </el-form>
   </div>
@@ -30,6 +31,8 @@
 </template>
 
 <script>
+import request from '@/utils/request.js'
+
 export default {
   name: 'LoginIndex',
   components: {},
@@ -40,7 +43,8 @@ export default {
         mobile: '',
         code: ''
       },
-      checked: false
+      checked: false,
+      loginLoading: false
     }
   },
   computed: {},
@@ -48,8 +52,33 @@ export default {
   created () {},
   mounted () {},
   methods: {
-    onSubmit () {
-      console.log('submit!')
+    onLogin () {
+      // 获取表单数据
+      const user = this.user
+      // 表单验证
+      // 通过验证，提交登录
+      // 开启登录的 loading
+      this.loginLoading = true
+      request({
+        method: 'POST',
+        url: '/app/v1_0/authorizations',
+        data: user
+      }).then(res => {
+        console.log(res)
+
+        // 登录成功
+        this.$message({
+          message: '登录成功！',
+          type: 'success'
+        })
+        this.loginLoading = false
+      }).catch(err => {
+        console.log('登录失败', err)
+        // 登录失败
+        this.$message.error('登录失败，手机号或验证码错误！')
+        this.loginLoading = false
+      })
+      // 处理后端响应结果
     }
   }
 }

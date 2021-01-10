@@ -2,16 +2,15 @@
  * 基于 axios 封装的请求模块
  */
 import axios from 'axios'
-
 // axios()
 // axios.get()
 // axios.post()
 
 // 创建 axios 实例
-const request = axios.crrate({
-  baseURL: 'http://ttapi.research.itcast.cn/'
+const request = axios.create({
+  // baseURL: 'http://ttapi.research.itcast.cn/'
+  baseURL: 'http://api-toutiao-web.itheima.net/'
 })
-// 'http://api-toutiao-web.itheima.net/
 
 // 请求拦截
 
