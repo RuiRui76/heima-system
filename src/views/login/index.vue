@@ -6,7 +6,7 @@
     </div>
   <el-form
   class="login-form"
-  ref="form"
+  ref="login-form"
   :model="user"
   :rules="formRules">
   <el-form-item prop="mobile">
@@ -19,8 +19,8 @@
      v-model="user.code"
      placeholder= "请输入验证码"></el-input>
   </el-form-item>
-  <el-form-item>
-    <el-checkbox v-model="checked">我已阅读并同意<a href="javascript:;">用户协议和隐私条</a></el-checkbox>
+  <el-form-item prop="agree">
+    <el-checkbox v-model="user.agree">我已阅读并同意<a href="javascript:;">用户协议和隐私条</a></el-checkbox>
   </el-form-item>
   <el-form-item>
     <el-button
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import request from '@/utils/request.js'
+import { login } from '@/api/user.js'
 
 export default {
   name: 'LoginIndex',
@@ -45,9 +45,9 @@ export default {
     return {
       user: {
         mobile: '',
-        code: ''
+        code: '',
+        agree: false
       },
-      checked: false,
       loginLoading: false,
       formRules: {
         mobile: [
@@ -57,6 +57,18 @@ export default {
         code: [
           { required: true, message: '验证码不能为空', trigger: 'change' },
           { pattern: /^\d{6}$/, message: '请输入正确的6位验证码', trigger: 'blur' }
+        ],
+        agree: [
+          {
+            validator: (rule, value, callback) => {
+              if (value) {
+                callback()
+              } else {
+                callback(new Error('请阅读并同意协议'))
+              }
+            },
+            tirgger: 'change'
+          }
         ]
       }
     }
@@ -68,16 +80,22 @@ export default {
   methods: {
     onLogin () {
       // 获取表单数据
-      const user = this.user
+      // const user = this.user
       // 表单验证
-      // 通过验证，提交登录
+      this.$refs['login-form'].validate(valid => {
+        if (!valid) {
+          return
+        }
+        // 通过验证，提交登录
+        this.login()
+      })
+
       // 开启登录的 loading
+      // 处理后端响应结果
+    },
+    login () {
       this.loginLoading = true
-      request({
-        method: 'POST',
-        url: '/app/v1_0/authorizations',
-        data: user
-      }).then(res => {
+      login(this.user).then(res => {
         console.log(res)
 
         // 登录成功
@@ -92,7 +110,6 @@ export default {
         this.$message.error('登录失败，手机号或验证码错误！')
         this.loginLoading = false
       })
-      // 处理后端响应结果
     }
   }
 }
