@@ -44,9 +44,10 @@ export default {
   data () {
     return {
       user: {
-        mobile: '',
-        code: '',
-        agree: false
+        mobile: '13911111111',
+        code: '246810',
+        agree: true // false
+        // 为了测试，暂时将账户密码写死
       },
       loginLoading: false,
       formRules: {
@@ -104,6 +105,10 @@ export default {
           type: 'success'
         })
         this.loginLoading = false
+        // 登录成功后跳转到首页
+        this.$router.push({
+          name: 'home'
+        })
       }).catch(err => {
         console.log('登录失败', err)
         // 登录失败
