@@ -97,14 +97,14 @@ export default {
     login () {
       this.loginLoading = true
       login(this.user).then(res => {
-        console.log(res)
-
         // 登录成功
         this.$message({
           message: '登录成功！',
           type: 'success'
         })
         this.loginLoading = false
+
+        window.localStorage.setItem('user', JSON.stringify(res.data.data))
         // 登录成功后跳转到首页
         this.$router.push({
           name: 'home'

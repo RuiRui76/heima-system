@@ -4,8 +4,11 @@
       background-color="#002033"
       text-color="#fff"
       active-text-color="#ffd04b"
-      router>
-      <el-menu-item class="logo">
+      router
+      :collapse="isCollapse"
+      >
+      <el-menu-item :class="{'logo':!isCollapse, 'mini-logo':isCollapse}">
+        <!-- <img src="./logo.png"> -->
       </el-menu-item>
       <el-menu-item index="/">
         <i class="el-icon-s-home"></i>
@@ -42,21 +45,26 @@
 export default {
   name: 'AppAside',
   components: {},
-  props: {},
+  props: ['is-collapse'],
   data () {
     return {}
   },
   computed: {},
   watch: {},
-  created: {},
-  mounted: {},
+  created () {},
+  mounted () {},
   methods: {}
 }
 </script>
-<style scoped>
+<style scoped lang="less">
 .logo{
-  background: url('./logo.jpg');
-  width: 100%;
-  height: 60px
+  background: url('./logo.png') center no-repeat ;
+  width: 200px;
+  height: 60px;
+}
+.mini-logo{
+  background: url('./mini-logo.png') center no-repeat;
+  width: 60px;
+  height: 60px;
 }
 </style>
