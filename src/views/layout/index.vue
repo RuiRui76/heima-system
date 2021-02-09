@@ -42,6 +42,7 @@
 <script>
 import AppAside from './components/aside.vue'
 import { getUserProfile } from '@/api/user.js'
+import globalBus from '@/utils/global-bus.js' // 用于同时更新顶部和个人设置的头像与名称
 
 export default {
   name: 'LayoutIndex',
@@ -60,6 +61,11 @@ export default {
   created () {
     // 初始化组件，请求获取用户资料
     this.loadUserProfile()
+    // 监听事件的发布
+    globalBus.$on('update-uesr', (data) => {
+      this.user.name = data.name // 资料修改后名字更新
+      this.user.photo = data.photo // 头像修改后，头像更新
+    })
   },
   mounted () {},
   methods: {
