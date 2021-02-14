@@ -8,7 +8,13 @@
         :visible.sync="dialogVisible"
         append-to-body>
           <el-tabs v-model="activeName" type="card" >
-            <el-tab-pane label="素材库" name="first">素材管理界面</el-tab-pane>
+            <el-tab-pane label="素材库" name="first">
+              <image-list
+              :is-show-add="false"
+              :is-show-action="false"
+              is-show-selected
+              ref="image-list"/>
+            </el-tab-pane>
             <el-tab-pane label="手动上传" name="second">
                 <input
                 type="file"
@@ -29,9 +35,13 @@
 
 <script>
 import { uploadImage } from '@/api/image.js'
+import ImageList from '@/views/image/components/image-list'
+
 export default {
   name: 'UploadCover',
-  components: {},
+  components: {
+    ImageList
+  },
   props: ['cover-image'],
   data () {
     return {
@@ -78,6 +88,20 @@ export default {
           // 设置组件通信
           this.$emit('update-cover', res.data.data.url)
         })
+      } else if (this.activeName === 'first') {
+        const imageList = this.$refs['image-list']
+        const selected = imageList.selected
+        if (selected === null) {
+          this.$message({
+            message: '请选择图片！'
+          })
+          return
+        }
+        // 关闭对话框
+        this.dialogVisible = false
+        // 修改父组件
+        this.$refs['cover-image'].src = imageList.images[selected].url
+        this.$emit('update-cover', imageList.images[selected].url)
       }
     }
   }
